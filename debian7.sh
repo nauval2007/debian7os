@@ -48,6 +48,9 @@ echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
 apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
 apt-get -y install build-essential
 
+# install rcconf
+apt-get -y install rcconf
+
 # disable exim
 service exim4 stop
 sysv-rc-conf exim4 off
@@ -187,7 +190,11 @@ apt-get -y install fail2ban;service fail2ban restart
 apt-get -y install squid3
 wget -O /etc/squid3/squid.conf "https://raw.githubusercontent.com/nauval2007/debian7os/master/squid3.conf"
 sed -i $MYIP2 /etc/squid3/squid.conf;
-service squid3 restart
+# service squid3 restart
+
+# disable squid
+sysv-rc-conf squid3 off
+
 
 # install webmin
 
