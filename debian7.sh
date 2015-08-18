@@ -38,7 +38,8 @@ apt-get -y --purge remove sendmail*;
 apt-get -y --purge remove bind9*;
 
 # update
-apt-get update; apt-get -y upgrade;
+apt-get update;
+# apt-get -y upgrade;
 
 # install webserver
 apt-get -y install nginx php5-fpm php5-cli
@@ -228,6 +229,8 @@ wget -O userexpired.sh "https://raw.githubusercontent.com/nauval2007/debian7os/m
 wget -O userlimit.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/userlimit.sh"
 wget -O expire.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/expire.sh"
 wget -O autokill.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/autokill.sh"
+wget -O delete-log.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/delete-log.sh"
+wget -O find-large-files.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/find-large-files.sh"
 wget -O /etc/issue.net "https://raw.githubusercontent.com/nauval2007/debian7os/master/banner"
 echo "@reboot root /root/userexpired.sh" > /etc/cron.d/userexpired
 echo "@reboot root /root/userlimit.sh" > /etc/cron.d/userlimit
@@ -244,6 +247,8 @@ chmod +x userlimit.sh
 chmod +x autokill.sh
 chmod +x dropmon
 chmod +x expire.sh
+chmod +x delete-log.sh
+chmod +x find-large-files.sh
 
 # finishing
 chown -R www-data:www-data /home/vps/public_html
