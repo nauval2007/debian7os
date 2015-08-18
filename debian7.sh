@@ -23,9 +23,9 @@ ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 service ssh restart
 
-# new git url https://raw.githubusercontent.com/yurisshOS/debian7os/master/debian7.sh
+# new git url https://raw.githubusercontent.com/nauval2007/debian7os/master/debian7.sh
 # set repo
-wget -O /etc/apt/sources.list "https://raw.github.com/yurisshOS/debian7os/master/sources.list.debian7"
+wget -O /etc/apt/sources.list "https://raw.githubusercontent.com/nauval2007/debian7os/master/sources.list.debian7"
 wget "http://www.dotdeb.org/dotdeb.gpg"
 wget "http://www.webmin.com/jcameron-key.asc"
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
@@ -61,7 +61,7 @@ service vnstat restart
 
 # install screenfetch
 cd
-wget 'https://raw.github.com/yurisshOS/debian7os/master/screeftech-dev'
+wget 'https://raw.githubusercontent.com/nauval2007/debian7os/master/screeftech-dev'
 mv screeftech-dev /usr/bin/screenfetch
 chmod +x /usr/bin/screenfetch
 echo "clear" >> .profile
@@ -71,24 +71,24 @@ echo "screenfetch" >> .profile
 cd
 rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
-wget -O /etc/nginx/nginx.conf "https://raw.github.com/yurisshOS/debian7os/master/nginx.conf"
+wget -O /etc/nginx/nginx.conf "https://raw.githubusercontent.com/nauval2007/debian7os/master/nginx.conf"
 mkdir -p /home/vps/public_html
-echo "<pre>Modified by Yurissh OpenSource</pre>" > /home/vps/public_html/index.html
+echo "<pre>Modified by Shien Ikiru</pre>" > /home/vps/public_html/index.html
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
-wget -O /etc/nginx/conf.d/vps.conf "https://raw.github.com/yurisshOS/debian7os/master/vps.conf"
+wget -O /etc/nginx/conf.d/vps.conf "https://raw.githubusercontent.com/nauval2007/debian7os/master/vps.conf"
 sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php5/fpm/pool.d/www.conf
 service php5-fpm restart
 service nginx restart
 
 # install openvpn
-wget -O /etc/openvpn/openvpn.tar "https://raw.github.com/yurisshOS/debian7os/master/openvpn-debian.tar"
+wget -O /etc/openvpn/openvpn.tar "https://raw.githubusercontent.com/nauval2007/debian7os/master/openvpn-debian.tar"
 cd /etc/openvpn/
 tar xf openvpn.tar
-wget -O /etc/openvpn/1194.conf "https://raw.github.com/yurisshOS/debian7os/master/1194.conf"
+wget -O /etc/openvpn/1194.conf "https://raw.githubusercontent.com/nauval2007/debian7os/master/1194.conf"
 service openvpn restart
 sysctl -w net.ipv4.ip_forward=1
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
-wget -O /etc/iptables.up.rules "https://raw.github.com/yurisshOS/debian7os/master/iptables.up.rules"
+wget -O /etc/iptables.up.rules "https://raw.githubusercontent.com/nauval2007/debian7os/master/iptables.up.rules"
 sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
 sed -i $MYIP2 /etc/iptables.up.rules;
 iptables-restore < /etc/iptables.up.rules
@@ -96,7 +96,7 @@ service openvpn restart
 
 # configure openvpn client config
 cd /etc/openvpn/
-wget -O /etc/openvpn/1194-client.ovpn "https://raw.github.com/yurisshOS/debian7os/master/1194-client.conf"
+wget -O /etc/openvpn/1194-client.ovpn "https://raw.githubusercontent.com/nauval2007/debian7os/master/1194-client.conf"
 sed -i $MYIP2 /etc/openvpn/1194-client.ovpn;
 PASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 15 | head -n 1`;
 useradd -M -s /bin/false shien
@@ -108,9 +108,9 @@ cp client.tar /home/vps/public_html/
 cd
 
 # install badvpn
-wget -O /usr/bin/badvpn-udpgw "https://raw.github.com/yurisshOS/debian7os/master/badvpn-udpgw"
+wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/nauval2007/debian7os/master/badvpn-udpgw"
 if [ "$OS" == "x86_64" ]; then
-  wget -O /usr/bin/badvpn-udpgw "https://raw.github.com/yurisshOS/debian7os/master/badvpn-udpgw64"
+  wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/nauval2007/debian7os/master/badvpn-udpgw64"
 fi
 sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
@@ -118,8 +118,8 @@ screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
 
 
 # install mrtg
-wget -O /etc/snmp/snmpd.conf "https://raw.github.com/yurisshOS/debian7os/master/snmpd.conf"
-wget -O /root/mrtg-mem.sh "https://raw.github.com/yurisshOS/debian7os/master/mrtg-mem.sh"
+wget -O /etc/snmp/snmpd.conf "https://raw.githubusercontent.com/nauval2007/debian7os/master/snmpd.conf"
+wget -O /root/mrtg-mem.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/mrtg-mem.sh"
 chmod +x /root/mrtg-mem.sh
 cd /etc/snmp/
 sed -i 's/TRAPDRUN=no/TRAPDRUN=yes/g' /etc/default/snmpd
@@ -127,7 +127,7 @@ service snmpd restart
 snmpwalk -v 1 -c public localhost 1.3.6.1.4.1.2021.10.1.3.1
 mkdir -p /home/vps/public_html/mrtg
 cfgmaker --zero-speed 100000000 --global 'WorkDir: /home/vps/public_html/mrtg' --output /etc/mrtg.cfg public@localhost
-curl "https://raw.github.com/yurisshOS/debian7os/master/mrtg.conf" >> /etc/mrtg.cfg
+curl "https://raw.githubusercontent.com/nauval2007/debian7os/master/mrtg.conf" >> /etc/mrtg.cfg
 sed -i 's/WorkDir: \/var\/www\/mrtg/# WorkDir: \/var\/www\/mrtg/g' /etc/mrtg.cfg
 sed -i 's/# Options\[_\]: growright, bits/Options\[_\]: growright/g' /etc/mrtg.cfg
 indexmaker --output=/home/vps/public_html/mrtg/index.html /etc/mrtg.cfg
@@ -153,11 +153,13 @@ echo "/usr/sbin/nologin" >> /etc/shells
 service ssh restart
 service dropbear restart
 
-# upgrade dropbear 2014
+# new url https://matt.ucc.asn.au/dropbear/releases/dropbear-2015.68.tar.bz2
+# upgrade dropbear 2015
 apt-get install zlib1g-dev
-wget https://matt.ucc.asn.au/dropbear/releases/dropbear-2014.66.tar.bz2
-bzip2 -cd dropbear-2014.66.tar.bz2  | tar xvf -
-cd dropbear-2014.66
+# wget https://matt.ucc.asn.au/dropbear/releases/dropbear-2014.66.tar.bz2
+wget https://matt.ucc.asn.au/dropbear/releases/dropbear-2015.68.tar.bz2
+bzip2 -cd dropbear-2015.68.tar.bz2  | tar xvf -
+cd dropbear-2015.68
 ./configure
 make && make install
 mv /usr/sbin/dropbear /usr/sbin/dropbear1
@@ -183,33 +185,45 @@ apt-get -y install fail2ban;service fail2ban restart
 
 # install squid3
 apt-get -y install squid3
-wget -O /etc/squid3/squid.conf "https://raw.github.com/yurisshOS/debian7os/master/squid3.conf"
+wget -O /etc/squid3/squid.conf "https://raw.githubusercontent.com/nauval2007/debian7os/master/squid3.conf"
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
 
 # install webmin
+
+# wget method
 cd
-wget http://prdownloads.sourceforge.net/webadmin/webmin_1.710_all.deb
-dpkg -i --force-all webmin_1.710_all.deb;
-apt-get -y -f install;
-rm /root/webmin_1.710_all.deb
+## wget http://prdownloads.sourceforge.net/webadmin/webmin_1.710_all.deb
+#wget http://prdownloads.sourceforge.net/webadmin/webmin_1.760_all.deb
+#dpkg -i --force-all webmin_1.760_all.deb;
+#apt-get -y -f install;
+#rm /root/webmin_1.760_all.deb
+
+# apt method
+cd /root
+wget http://www.webmin.com/jcameron-key.asc
+apt-key add jcameron-key.asc 
+
+# apt-get update
+apt-get -y install webmin
+
 service webmin restart
 service vnstat restart
 
 # download script
 cd
-wget -O speedtest_cli.py "https://raw.github.com/sivel/speedtest-cli/master/speedtest_cli.py"
-wget -O bench-network.sh "https://raw.github.com/yurisshOS/debian7os/master/bench-network.sh"
-wget -O ps_mem.py "https://raw.github.com/pixelb/ps_mem/master/ps_mem.py"
-wget -O dropmon "https://raw.github.com/yurisshOS/debian7os/master/dropmon.sh"
-wget -O userlogin.sh "https://raw.github.com/yurisshOS/debian7os/master/userlogin.sh"
-wget -O userexpired.sh "https://raw.github.com/yurisshOS/debian7os/master/userexpired.sh"
-#wget -O userlimit.sh "https://raw.github.com/yurisshOS/debian7os/master/userlimit.sh"
-wget -O expire.sh "https://raw.github.com/yurisshOS/debian7os/master/expire.sh"
-#wget -O autokill.sh "https://raw.github.com/yurisshOS/debian7os/master/autokill.sh"
-wget -O /etc/issue.net "https://raw.github.com/yurisshOS/debian7os/master/banner"
+wget -O speedtest_cli.py "https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest_cli.py"
+wget -O bench-network.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/bench-network.sh"
+wget -O ps_mem.py "https://raw.githubusercontent.com/pixelb/ps_mem/master/ps_mem.py"
+wget -O dropmon "https://raw.githubusercontent.com/nauval2007/debian7os/master/dropmon.sh"
+wget -O userlogin.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/userlogin.sh"
+wget -O userexpired.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/userexpired.sh"
+wget -O userlimit.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/userlimit.sh"
+wget -O expire.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/expire.sh"
+wget -O autokill.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/autokill.sh"
+wget -O /etc/issue.net "https://raw.githubusercontent.com/nauval2007/debian7os/master/banner"
 echo "@reboot root /root/userexpired.sh" > /etc/cron.d/userexpired
-#echo "@reboot root /root/userlimit.sh" > /etc/cron.d/userlimit
+echo "@reboot root /root/userlimit.sh" > /etc/cron.d/userlimit
 echo "0 */6 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "* * * * * service dropbear restart" > /etc/cron.d/dropbear
 #echo "@reboot root /root/autokill.sh" > /etc/cron.d/autokill
@@ -219,8 +233,8 @@ chmod +x speedtest_cli.py
 chmod +x ps_mem.py
 chmod +x userlogin.sh
 chmod +x userexpired.sh
-#chmod +x userlimit.sh
-#chmod +x autokill.sh
+chmod +x userlimit.sh
+chmod +x autokill.sh
 chmod +x dropmon
 chmod +x expire.sh
 
@@ -273,7 +287,7 @@ echo "./speedtest_cli.py --share"  | tee -a log-install.txt
 echo "./bench-network.sh"  | tee -a log-install.txt
 echo "./userlogin.sh" | tee -a log-install.txt
 echo "./userexpired.sh" | tee -a log-install.txt
-#echo "./userlimit.sh 2 [ini utk melimit max 2 login]" | tee -a log-install.txt
+echo "./userlimit.sh 2 [ini utk melimit max 2 login]" | tee -a log-install.txt
 echo "sh dropmon [port] contoh: sh dropmon 443" | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Fitur lain"  | tee -a log-install.txt
