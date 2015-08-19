@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # initialisasi var
+echo "Mulai instalasi debian7"
 export DEBIAN_FRONTEND=noninteractive
 OS=`uname -m`;
 MYIP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0'`;
@@ -10,8 +11,8 @@ MYIP2="s/xxxxxxxxx/$MYIP/g";
 cd
 
 # disable ipv6
-#echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
-#sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
+echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
+sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 
 # install wget and curl
 apt-get update;apt-get -y install wget curl;
@@ -238,6 +239,7 @@ wget -O expire.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master
 wget -O autokill.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/autokill.sh"
 wget -O delete-log.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/delete-log.sh"
 wget -O find-large-files.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/find-large-files.sh"
+wget -O vpnmon.py "https://raw.githubusercontent.com/nauval2007/debian7os/master/vpnmon.py"
 wget -O /etc/issue.net "https://raw.githubusercontent.com/nauval2007/debian7os/master/banner"
 echo "@reboot root /root/userexpired.sh" > /etc/cron.d/userexpired
 echo "@reboot root /root/userlimit.sh" > /etc/cron.d/userlimit
@@ -245,6 +247,10 @@ echo "0 */6 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "* * * * * service dropbear restart" > /etc/cron.d/dropbear
 #echo "@reboot root /root/autokill.sh" > /etc/cron.d/autokill
 #sed -i '$ i\screen -AmdS check /root/autokill.sh' /etc/rc.local
+
+# php5-fpm service error fix for debian 8
+#echo "@reboot root /usr/sbin/php5-fpm -D" 
+
 chmod +x bench-network.sh
 chmod +x speedtest_cli.py
 chmod +x ps_mem.py
@@ -256,6 +262,7 @@ chmod +x dropmon
 chmod +x expire.sh
 chmod +x delete-log.sh
 chmod +x find-large-files.sh
+chmod +x vpnmon.py
 
 # finishing
 chown -R www-data:www-data /home/vps/public_html
