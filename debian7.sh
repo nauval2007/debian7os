@@ -91,11 +91,18 @@ tar xf openvpn.tar
 wget -O /etc/openvpn/1194.conf "https://raw.githubusercontent.com/nauval2007/debian7os/master/1194.conf"
 service openvpn restart
 sysctl -w net.ipv4.ip_forward=1
+# net.ipv4.conf.all.accept_source_route = 1
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
+
+# iptables -t nat -A POSTROUTING -s 10.9.8.0/24 -o venet0 -j SNAT --to xxx.xxx.xxx.xxx
+#iptables -t nat -A POSTROUTING -s 192.168.100.0/24 -o venet0 -j SNAT --to $MYIP2
+#iptables-save
+
 wget -O /etc/iptables.up.rules "https://raw.githubusercontent.com/nauval2007/debian7os/master/iptables.up.rules"
 sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
 sed -i $MYIP2 /etc/iptables.up.rules;
 iptables-restore < /etc/iptables.up.rules
+
 service openvpn restart
 
 # configure openvpn client config
