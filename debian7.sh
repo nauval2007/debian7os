@@ -167,7 +167,7 @@ service dropbear restart
 
 # new url https://matt.ucc.asn.au/dropbear/releases/dropbear-2015.68.tar.bz2
 # upgrade dropbear 2015
-apt-get install zlib1g-dev
+apt-get install -y zlib1g-dev
 # wget https://matt.ucc.asn.au/dropbear/releases/dropbear-2014.66.tar.bz2
 wget https://matt.ucc.asn.au/dropbear/releases/dropbear-2015.68.tar.bz2
 bzip2 -cd dropbear-2015.68.tar.bz2  | tar xvf -
