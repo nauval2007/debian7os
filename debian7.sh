@@ -240,7 +240,7 @@ wget -O expire.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master
 wget -O autokill.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/autokill.sh"
 wget -O delete-log.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/delete-log.sh"
 wget -O find-large-files.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/find-large-files.sh"
-wget -O vpnmon "https://raw.githubusercontent.com/nauval2007/debian7os/master/vpnmon.py"
+wget -O vpnmon "https://raw.githubusercontent.com/nauval2007/debian7os/master/vpnmon"
 wget -O /etc/issue.net "https://raw.githubusercontent.com/nauval2007/debian7os/master/banner"
 echo "@reboot root /root/userexpired.sh" > /etc/cron.d/userexpired
 echo "@reboot root /root/userlimit.sh" > /etc/cron.d/userlimit
