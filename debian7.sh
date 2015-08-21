@@ -29,8 +29,8 @@ service ssh restart
 wget -O /etc/apt/sources.list "https://raw.githubusercontent.com/nauval2007/debian7os/master/sources.list.debian7"
 wget "http://www.dotdeb.org/dotdeb.gpg"
 wget "http://www.webmin.com/jcameron-key.asc"
-cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
-cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
+cat dotdeb.gpg | apt-key add -;rm -f dotdeb.gpg
+cat jcameron-key.asc | apt-key add -;rm -f jcameron-key.asc
 
 # remove unused
 apt-get -y --purge remove samba*;
@@ -74,8 +74,8 @@ echo "screenfetch" >> .profile
 
 # install webserver
 cd
-rm /etc/nginx/sites-enabled/default
-rm /etc/nginx/sites-available/default
+rm -f /etc/nginx/sites-enabled/default
+rm -f /etc/nginx/sites-available/default
 wget -O /etc/nginx/nginx.conf "https://raw.githubusercontent.com/nauval2007/debian7os/master/nginx.conf"
 mkdir -p /home/vps/public_html
 echo "<pre>Modified by Shien Ikiru</pre>" > /home/vps/public_html/index.html
@@ -149,7 +149,7 @@ if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; e
 cd
 
 # setting port ssh
-#sed -i '/Port 22/a Port  143' /etc/ssh/sshd_config
+sed -i '/Port 22/a Port  143' /etc/ssh/sshd_config
 #sed -i '/Port 22/a Port  80' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 sed -i 's/#Banner/Banner/g' /etc/ssh/sshd_config
@@ -183,7 +183,7 @@ service dropbear restart
 cd /home/vps/public_html/
 wget http://www.sqweek.com/sqweek/files/vnstat_php_frontend-1.5.1.tar.gz
 tar xf vnstat_php_frontend-1.5.1.tar.gz
-rm vnstat_php_frontend-1.5.1.tar.gz
+rm -f vnstat_php_frontend-1.5.1.tar.gz
 mv vnstat_php_frontend-1.5.1 vnstat
 cd vnstat
 sed -i 's/eth0/venet0/g' config.php
@@ -244,6 +244,7 @@ wget -O vpnmon "https://raw.githubusercontent.com/nauval2007/debian7os/master/vp
 wget -O /etc/issue.net "https://raw.githubusercontent.com/nauval2007/debian7os/master/banner"
 echo "@reboot root /root/userexpired.sh" > /etc/cron.d/userexpired
 echo "@reboot root /root/userlimit.sh" > /etc/cron.d/userlimit
+echo "@reboot root /root/userlimit-os.sh" > /etc/cron.d/userlimit-os
 echo "0 */6 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "* * * * * service dropbear restart" > /etc/cron.d/dropbear
 #echo "@reboot root /root/autokill.sh" > /etc/cron.d/autokill
