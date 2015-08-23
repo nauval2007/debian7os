@@ -251,7 +251,13 @@ echo "* * * * * service dropbear restart" > /etc/cron.d/dropbear
 #sed -i '$ i\screen -AmdS check /root/autokill.sh' /etc/rc.local
 
 # php5-fpm service error fix for debian 8
-#echo "@reboot root /usr/sbin/php5-fpm -D" 
+#echo "@reboot root /usr/sbin/php5-fpm -D" >> /etc/crontab
+
+# snmp log fix
+# sed -i 's/SNMPDOPTS/#SNMPDOPTS/g'  /etc/defaults/snmpd
+# sed -i 's/TRAPDOPTS/#TRAPDOPTS/g'  /etc/defaults/snmpd
+# sed -i "SNMPDOPTS='-LS6d -Lf /dev/null -u snmp -g snmp -I -smux -p /var/run/snmpd.pid'" /etc/squid3/squid.conf;
+# sed -i "TRAPDOPTS='-LS6d -p /var/run/snmptrapd.pid'" /etc/squid3/squid.conf;
 
 chmod +x bench-network.sh
 chmod +x speedtest_cli.py
