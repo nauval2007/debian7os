@@ -204,7 +204,7 @@ sed -i $MYIP2 /etc/squid3/squid.conf;
 
 # disable squid
 sysv-rc-conf squid3 off
-
+service squid3 stop
 
 # install webmin
 
