@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# initialisasi var
 # script by Shien Ikiru (c) 2015 <shienikiru@gmail.com>
 # wget --no-check-certificate https://raw.githubusercontent.com/nauval2007/debian7os/master/install-softether.sh
 # installing softether for debian
@@ -127,4 +128,5 @@ echo "dhcp-option=tap_soft,3,192.168.7.1" >> /etc/dnsmasq.conf
 
 echo "Instalasi sukses!"
 echo "Silahkan gunakan Softether Server Manager GUI untuk melanjutkan."
+
 rm -f /root/install-softether.sh
