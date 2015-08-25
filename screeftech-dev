@@ -3193,7 +3193,6 @@ infoDisplay () {
 			if [[ "${display[@]}" =~ "cpu" ]]; then echo -e "$mycpu"; fi
 			if [[ "${display[@]}" =~ "gpu" ]]; then echo -e "$mygpu"; fi
 			if [[ "${display[@]}" =~ "mem" ]]; then echo -e "$mymem"; fi
-		fi
 echo -e "## DILARANG MENGGUNAKAN AKUN INI UNTUK:                 ##"
 echo -e "## 1. Multi login lebih dari 2 BITVISE                  ##"
 echo -e "## 2. Melakukan aktivitas HACKING SPAMMING PHISHING DLL ##"
@@ -3206,6 +3205,8 @@ echo -e "## 8. Virtual currency (*coin) mining Server            ##"
 echo -e "## 9. Crawlers Server                                   ##"
 echo -e "## 10.HYIP websites                                     ##"
 echo -e "## 11.Booter/Stresser websites (Intensive CPU usage)    ##"
+
+		fi
 		
 		
 	fi
