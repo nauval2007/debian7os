@@ -3246,17 +3246,9 @@ infoDisplay
 [ "$screenshot" == "1" ] && takeShot
 [ "$exportTheme" == "1" ] && themeExport
 
-echo -e "## DILARANG MENGGUNAKAN AKUN INI UNTUK:                 ##"
-echo -e "## 1. Multi login lebih dari 2 BITVISE                  ##"
-echo -e "## 2. Melakukan aktivitas HACKING SPAMMING PHISHING DLL ##"
-echo -e "## 3. Download file TORRENT / Illegal downloads/Piracy  ##"
-echo -e "## 4. TOR dan OPEN PROXY exit                           ##"
-echo -e "## 5. (DoS) attacks, IP spoofing                        ##"
-echo -e "## 6. Kloxo                                             ##"
-echo -e "## 7. Video chat (e.g., CamFrog, Visichat) Server       ##"
-echo -e "## 8. Virtual currency (*coin) mining Server            ##"
-echo -e "## 9. Crawlers Server                                   ##"
-echo -e "## 10.HYIP websites                                     ##"
-echo -e "## 11.Booter/Stresser websites (Intensive CPU usage)    ##"
+echo -e "################## DILARANG MENGGUNAKAN VPS INI UNTUK: ###################"
+echo -e "■ Multi login lebih dari 2 BITVISE; ■ Melakukan aktivitas HACKING SPAMMING PHISHING DLL; ■ Download file TORRENT / Illegal downloads/Piracy; ■ TOR dan OPEN PROXY exit; ■ (DoS) attacks, ■ IP spoofing; ■ Kloxo; ■ Video chat (e.g., CamFrog, Visichat) Server; ■ Virtual currency (*coin) mining Server; ■ Crawlers Server; ■ HYIP websites; ■ Booter/Stresser websites (or any Intensive CPU usage) "
+echo ""
+echo -e "Shien Ikiru (c) 2015 <nauval2007@gmail.com>"
 
 exit 0
