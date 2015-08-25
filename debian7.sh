@@ -287,7 +287,7 @@ echo "* * * * * root /root/userlimit.sh" > /etc/cron.d/userlimit
 echo "* * * * * root /root/userlimit-os.sh" > /etc/cron.d/userlimit-os
 echo "0 */6 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "* * * * * service dropbear restart" > /etc/cron.d/dropbear
-echo "* * * * * root /root/userloginhist.sh >> /root/userloginhist.txt" > /etc/cron.d/userloginhist
+echo "* */1 * * * root /root/userloginhist.sh >> /root/userloginhist.txt" > /etc/cron.d/userloginhist
 #echo "@reboot root /root/autokill.sh" > /etc/cron.d/autokill
 #sed -i '$ i\screen -AmdS check /root/autokill.sh' /etc/rc.local
 
