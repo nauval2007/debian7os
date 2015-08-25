@@ -280,15 +280,18 @@ wget -O delete-log.sh "https://raw.githubusercontent.com/nauval2007/debian7os/ma
 wget -O find-large-files.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/find-large-files.sh"
 wget -O vpnmon "https://raw.githubusercontent.com/nauval2007/debian7os/master/vpnmon"
 wget -O /etc/issue.net "https://raw.githubusercontent.com/nauval2007/debian7os/master/banner"
-echo "@reboot root /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "@reboot root /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "@reboot root /root/userlimit-os.sh" > /etc/cron.d/userlimit-os
+wget -O userloginhist.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/userloginhist.sh"
+wget -O vpnmonhist "https://raw.githubusercontent.com/nauval2007/debian7os/master/vpnmonhist"
+echo "* * * * * root /root/userexpired.sh" > /etc/cron.d/userexpired
+echo "* * * * * root /root/userlimit.sh" > /etc/cron.d/userlimit
+echo "* * * * * root /root/userlimit-os.sh" > /etc/cron.d/userlimit-os
 echo "0 */6 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "* * * * * service dropbear restart" > /etc/cron.d/dropbear
+echo "* * * * * root /root/userloginhist.sh >> /root/userloginhist.txt" > /etc/cron.d/userloginhist
 #echo "@reboot root /root/autokill.sh" > /etc/cron.d/autokill
 #sed -i '$ i\screen -AmdS check /root/autokill.sh' /etc/rc.local
 
-# php5-fpm service error fix for debian 8
+# php5-fpm service error fix for some debian 8
 #echo "@reboot root /usr/sbin/php5-fpm -D" >> /etc/crontab
 
 # snmp log fix
@@ -309,6 +312,8 @@ chmod +x expire.sh
 chmod +x delete-log.sh
 chmod +x find-large-files.sh
 chmod +x vpnmon
+chmod +x userloginhist.sh
+chmod +x vpnmonhist
 
 # finishing
 chown -R www-data:www-data /home/vps/public_html
