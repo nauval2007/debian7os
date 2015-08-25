@@ -24,7 +24,7 @@ ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 service ssh restart
 
-# new git url https://raw.githubusercontent.com/nauval2007/debian7os/master/debian7.sh
+# new git url wget ---no-check-certificate https://raw.githubusercontent.com/nauval2007/debian7os/master/debian7.sh
 # set repo
 wget -O /etc/apt/sources.list "https://raw.githubusercontent.com/nauval2007/debian7os/master/sources.list.debian7"
 wget "http://www.dotdeb.org/dotdeb.gpg"
