@@ -1,5 +1,4 @@
-#!/bin/sh
-
+﻿#!/bin/sh
 # initialisasi var
 # script by Shien Ikiru (c) 2015 <shienikiru@gmail.com>
 # wget --no-check-certificate https://raw.githubusercontent.com/nauval2007/debian7os/master/install-softether.sh
