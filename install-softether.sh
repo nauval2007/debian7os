@@ -1,6 +1,9 @@
+#!/bin/sh
+
 # script by Shien Ikiru (c) 2015 <shienikiru@gmail.com>
 # wget --no-check-certificate https://raw.githubusercontent.com/nauval2007/debian7os/master/install-softether.sh
 # installing softether for debian
+
 export DEBIAN_FRONTEND=noninteractive
 OS=`uname -m`;
 MYIP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0'`;
