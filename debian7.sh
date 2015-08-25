@@ -6,7 +6,7 @@ export DEBIAN_FRONTEND=noninteractive
 OS=`uname -m`;
 MYIP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0'`;
 MYIP2="s/xxxxxxxxx/$MYIP/g";
-
+ETH=`ifconfig | grep Link`
 # go to root
 cd
 
@@ -226,6 +226,44 @@ apt-get -y install webmin
 
 service webmin restart
 service vnstat restart
+
+# install webmin module
+# cd /usr/share/webmin/module-archives/
+mkdir webmin-module
+cd webmin-module/
+# disk usage
+wget http://www.webmin.com/download/modules/disk-usage.wbm.gz
+# http://www.niemueller.de/webmin/modules/upload/
+# mrtg
+wget http://www.jla.homepage.t-online.de/pub/webmin/mrtg-0.2p3.wbm
+# squid (standard already installed)
+# http://www.webmin.com/webmin/download/modules/sarg.wbm.gz
+# squidguard
+wget http://perso.efrei.fr/~tabary/webmin/squidguard/squidguard.wbm.gz
+# squid realtime monitor
+wget http://sourceforge.net/projects/squidrealmon/files/sq-real-mon.wbm.gz
+# squid info
+http://swelltech.com/projects/webmin/modules/squidinfo-1.170.wbm
+# webalizer ( standard already installed )
+# http://www.webmin.com/webmin/download/modules/webalizer.wbm.gz
+# openvpn
+wget http://www.openit.it/downloads/OpenVPNadmin/openvpn-2.6.wbm.gz
+# nginx
+wget http://www.justindhoffman.com/sites/justindhoffman.com/files/nginx-0.08.wbm__0.gz
+
+#
+/usr/share/webmin/install-module.pl ./disk-usage.wbm.gz
+/usr/share/webmin/install-module.pl ./mrtg-0.2p3.wbm
+#/usr/share/webmin/install-module.pl ./squidguard.wbm.gz
+#/usr/share/webmin/install-module.pl ./squidguard.wbm.gz
+#/usr/share/webmin/install-module.pl ./sq-real-mon.wbm.gz
+#/usr/share/webmin/install-module.pl ./squidinfo-1.170.wbm
+/usr/share/webmin/install-module.pl ./openvpn-2.6.wbm.gz
+/usr/share/webmin/install-module.pl ./nginx-0.08.wbm__0.gz
+
+
+service webmin restart
+
 
 # download script
 cd
