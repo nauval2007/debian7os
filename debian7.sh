@@ -1,5 +1,7 @@
 #!/bin/sh
-
+# Debian install script
+# Script mod by Shien Ikiru 
+# <shienikiru@gmail.com> <nauval2007@gmail.com>
 # initialisasi var
 echo "Mulai instalasi debian7"
 export DEBIAN_FRONTEND=noninteractive
@@ -7,6 +9,14 @@ OS=`uname -m`;
 MYIP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0'`;
 MYIP2="s/xxxxxxxxx/$MYIP/g";
 ETH=`ifconfig | grep Link`
+
+if [[ $ETH == *"eth"* ]]
+then
+ ETH="eth0"
+else
+ ETH="venet0"
+fi
+
 # go to root
 cd
 
@@ -156,11 +166,12 @@ sed -i 's/#Banner/Banner/g' /etc/ssh/sshd_config
 service ssh restart
 
 # install dropbear
+# -K keepalivetimeout -I iddletimetimeout
 apt-get -y install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=443/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS=""/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="\/etc\/issue.net"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-K 10 -I 60"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="\/etc\/issue.net "/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 echo "/usr/sbin/nologin" >> /etc/shells
 service ssh restart
@@ -186,12 +197,26 @@ tar xf vnstat_php_frontend-1.5.1.tar.gz
 rm -f vnstat_php_frontend-1.5.1.tar.gz
 mv vnstat_php_frontend-1.5.1 vnstat
 cd vnstat
-sed -i 's/eth0/venet0/g' config.php
-sed -i "s/\$iface_list = array('venet0', 'sixxs');/\$iface_list = array('venet0');/g" config.php
+if [[ $ETH == *"venet"* ]]
+then
+	sed -i 's/eth0/venet0/g' config.php
+	sed -i "s/\$iface_list = array('venet0', 'sixxs');/\$iface_list = array('venet0');/g" config.php
+fi
 sed -i "s/\$language = 'nl';/\$language = 'en';/g" config.php
 sed -i 's/Internal/Internet/g' config.php
 sed -i '/SixXS IPv6/d' config.php
 cd
+
+# vnstat fix
+touch /var/lib/vnstat/.venet0
+chown -R vnstat:vnstat /var/lib/vnstat/.venet0
+
+# /etc/vnstat.conf
+# Interface "venet0"
+if [[ $ETH == *"venet"* ]]
+then
+	sed -i 's/eth0/venet0/g' /etc/vnstat.conf
+fi
 
 # install fail2ban
 apt-get -y install fail2ban;service fail2ban restart
@@ -274,6 +299,7 @@ wget -O dropmon "https://raw.githubusercontent.com/nauval2007/debian7os/master/d
 wget -O userlogin.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/userlogin.sh"
 wget -O userexpired.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/userexpired.sh"
 wget -O userlimit.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/userlimit.sh"
+wget -O userlimit-os.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/userlimit-os.sh"
 wget -O expire.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/expire.sh"
 wget -O autokill.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/autokill.sh"
 wget -O delete-log.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/delete-log.sh"
@@ -282,12 +308,15 @@ wget -O vpnmon "https://raw.githubusercontent.com/nauval2007/debian7os/master/vp
 wget -O /etc/issue.net "https://raw.githubusercontent.com/nauval2007/debian7os/master/banner"
 wget -O userloginhist.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/userloginhist.sh"
 wget -O vpnmonhist "https://raw.githubusercontent.com/nauval2007/debian7os/master/vpnmonhist"
+wget -O runevery.sh "https://raw.githubusercontent.com/nauval2007/debian7os/master/runevery.sh"
 echo "* * * * * root /root/userexpired.sh" > /etc/cron.d/userexpired
-echo "* * * * * root /root/userlimit.sh" > /etc/cron.d/userlimit
-echo "* * * * * root /root/userlimit-os.sh" > /etc/cron.d/userlimit-os
+echo "* * * * * root /root/userlimit.sh 2" > /etc/cron.d/userlimit
+echo "* * * * * root /root/userlimit-os.sh 2" > /etc/cron.d/userlimit-os
+echo "* * * * * root /root/runevery.sh 5" > /etc/cron.d/runevery
 echo "0 */6 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "* * * * * service dropbear restart" > /etc/cron.d/dropbear
 echo "* */1 * * * root /root/userloginhist.sh >> /root/userloginhist.txt" > /etc/cron.d/userloginhist
+echo "* - maxlogins 2" >> /etc/security/limits.conf
 #echo "@reboot root /root/autokill.sh" > /etc/cron.d/autokill
 #sed -i '$ i\screen -AmdS check /root/autokill.sh' /etc/rc.local
 
@@ -306,6 +335,7 @@ chmod +x ps_mem.py
 chmod +x userlogin.sh
 chmod +x userexpired.sh
 chmod +x userlimit.sh
+chmod +x userlimit-os.sh
 chmod +x autokill.sh
 chmod +x dropmon
 chmod +x expire.sh
@@ -314,6 +344,7 @@ chmod +x find-large-files.sh
 chmod +x vpnmon
 chmod +x userloginhist.sh
 chmod +x vpnmonhist
+chmod +x runevery.sh
 
 # finishing
 chown -R www-data:www-data /home/vps/public_html
@@ -333,48 +364,53 @@ echo "unset HISTFILE" >> /etc/profile
 
 # info
 clear
+echo "ShienVPS | server |"
 echo ""  | tee -a log-install.txt
 echo "AUTOSCRIPT INCLUDES" | tee log-install.txt
 echo "===============================================" | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Service"  | tee -a log-install.txt
 echo "-------"  | tee -a log-install.txt
-echo "OpenVPN  : TCP 1194 (client config : http://$MYIP:81/client.tar)"  | tee -a log-install.txt
-echo "OpenSSH  : 22, 80, 143"  | tee -a log-install.txt
-echo "Dropbear : 443, 110, 109"  | tee -a log-install.txt
-echo "Squid3   : 8080 (limit to IP SSH)"  | tee -a log-install.txt
-echo "badvpn   : badvpn-udpgw port 7300"  | tee -a log-install.txt
-echo "nginx    : 81"  | tee -a log-install.txt
+echo "■ OpenVPN  : TCP 1194 (client config : http://$MYIP:81/client.tar)"  | tee -a log-install.txt
+echo "■ OpenSSH  : 22, 80, 143"  | tee -a log-install.txt
+echo "■ Dropbear : 443, 110, 109"  | tee -a log-install.txt
+echo "■ Squid3   : 8080 (limit to IP SSH)"  | tee -a log-install.txt
+echo "■ badvpn   : badvpn-udpgw port 7300"  | tee -a log-install.txt
+echo "■ nginx    : 81"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Tools"  | tee -a log-install.txt
 echo "-----"  | tee -a log-install.txt
-echo "axel"  | tee -a log-install.txt
-echo "bmon"  | tee -a log-install.txt
-echo "htop"  | tee -a log-install.txt
-echo "iftop"  | tee -a log-install.txt
-echo "mtr"  | tee -a log-install.txt
-echo "rkhunter"  | tee -a log-install.txt
-echo "nethogs: nethogs venet0"  | tee -a log-install.txt
+echo "■ axel"  | tee -a log-install.txt
+echo "■ bmon"  | tee -a log-install.txt
+echo "■ htop"  | tee -a log-install.txt
+echo "■ iftop"  | tee -a log-install.txt
+echo "■ mtr"  | tee -a log-install.txt
+echo "■ rkhunter"  | tee -a log-install.txt
+echo "■ nethogs: nethogs venet0"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Script"  | tee -a log-install.txt
 echo "------"  | tee -a log-install.txt
-echo "screenfetch"  | tee -a log-install.txt
-echo "./ps_mem.py"  | tee -a log-install.txt
-echo "./speedtest_cli.py --share"  | tee -a log-install.txt
-echo "./bench-network.sh"  | tee -a log-install.txt
-echo "./userlogin.sh" | tee -a log-install.txt
-echo "./userexpired.sh" | tee -a log-install.txt
-echo "./userlimit.sh 2 [ini utk melimit max 2 login]" | tee -a log-install.txt
-echo "sh dropmon [port] contoh: sh dropmon 443" | tee -a log-install.txt
+echo "■ screenfetch"  | tee -a log-install.txt
+echo "■ ./ps_mem.py"  | tee -a log-install.txt
+echo "■ ./speedtest_cli.py --share"  | tee -a log-install.txt
+echo "■ ./bench-network.sh"  | tee -a log-install.txt
+echo "■ ./userlogin.sh" | tee -a log-install.txt
+echo "■ ./userexpired.sh" | tee -a log-install.txt
+echo "■ ./userlimit.sh 2 [ini utk melimit max 2 login]" | tee -a log-install.txt
+echo "■ sh dropmon [port] contoh: sh dropmon 443" | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Fitur lain"  | tee -a log-install.txt
 echo "----------"  | tee -a log-install.txt
-echo "Webmin   : https://$MYIP:10000/"  | tee -a log-install.txt
-echo "vnstat   : http://$MYIP:81/vnstat/"  | tee -a log-install.txt
-echo "MRTG     : http://$MYIP:81/mrtg/"  | tee -a log-install.txt
-echo "Timezone : Asia/Jakarta"  | tee -a log-install.txt
-echo "Fail2Ban : [on]"  | tee -a log-install.txt
-echo "IPv6     : [off]"  | tee -a log-install.txt
+echo "■ Webmin   : https://$MYIP:10000/"  | tee -a log-install.txt
+echo "■ vnstat   : http://$MYIP:81/vnstat/"  | tee -a log-install.txt
+echo "■ MRTG     : http://$MYIP:81/mrtg/"  | tee -a log-install.txt
+echo "■ Timezone : Asia/Jakarta"  | tee -a log-install.txt
+echo "■ Fail2Ban : [on]"  | tee -a log-install.txt
+echo "■ IPv6     : [off]"  | tee -a log-install.txt
+echo "Account Default (utk SSH dan VPN)"
+echo "---------------"
+echo "User     : shien"
+echo "Password : $PASS"
 echo ""  | tee -a log-install.txt
 echo "Script Modified by  Shien Ikiru"  | tee -a log-install.txt
 echo "Thanks to Original Creator Yurissh Kang Arie & Mikodemos"

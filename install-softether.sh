@@ -1,8 +1,8 @@
 ﻿#!/bin/sh
-# initialisasi var
 # script by Shien Ikiru (c) 2015 <shienikiru@gmail.com>
 # wget --no-check-certificate https://raw.githubusercontent.com/nauval2007/debian7os/master/install-softether.sh
 # installing softether for debian
+# initialisasi var
 
 export DEBIAN_FRONTEND=noninteractive
 OS=`uname -m`;
@@ -15,6 +15,15 @@ then
 else
  ETH="venet0"
 fi
+
+# update
+apt-get update;
+
+apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter multitail
+apt-get -y install build-essential
+
+# install rcconf
+apt-get -y install rcconf
 
 cd 
 # ppa:dajhorn/softether 
@@ -35,58 +44,61 @@ cd
 # echo use ' '  or """" for print $XXX
 # echo use " " for print value of $XXX
 
-echo "### BEGIN INIT INFO" > /etc/init.d/vpnserver
-echo "# Provides:          vpnserver" >> /etc/init.d/vpnserver
-echo "# Required-Start:    $remote_fs $syslog" >> /etc/init.d/vpnserver
-echo "# Required-Stop:     $remote_fs $syslog" >> /etc/init.d/vpnserver
-echo "# Default-Start:     2 3 4 5" >> /etc/init.d/vpnserver
-echo "# Default-Stop:      0 1 6" >> /etc/init.d/vpnserver
-echo "# Short-Description: Start daemon at boot time" >> /etc/init.d/vpnserver
-echo "# Description:       Enable Softether by daemon." >> /etc/init.d/vpnserver
-echo "### END INIT INFO" >> /etc/init.d/vpnserver
-echo "DAEMON=/usr/local/vpnserver/vpnserver" >> /etc/init.d/vpnserver
-echo "LOCK=/var/lock/subsys/vpnserver" >> /etc/init.d/vpnserver
-echo "TAP_ADDR=192.168.7.1" >> /etc/init.d/vpnserver
-echo "" >> /etc/init.d/vpnserver
-echo 'test -x $DAEMON || exit 0' >> /etc/init.d/vpnserver
-echo 'case $1 in' >> /etc/init.d/vpnserver
-echo "start)" >> /etc/init.d/vpnserver
-echo '$DAEMON start' >> /etc/init.d/vpnserver
-echo 'touch $LOCK'  >> /etc/init.d/vpnserver
-echo "sleep 1"  >> /etc/init.d/vpnserver
-echo '/sbin/ifconfig tap_soft $TAP_ADDR'  >> /etc/init.d/vpnserver
-echo "iptables -t nat -A POSTROUTING -s 192.168.250.0/24 -o $ETH -j MASQUERADE" >> /etc/init.d/vpnserver
-echo "service dhcpd restart" >> /etc/init.d/vpnserver
-echo 'service dnsmasq restart' >> /etc/init.d/vpnserver
-echo ";;" >> /etc/init.d/vpnserver
-echo "stop)" >> /etc/init.d/vpnserver
-echo "iptables -t nat -D POSTROUTING -s 192.168.250.0/24 -o $ETH -j MASQUERADE" >> /etc/init.d/vpnserver
-echo '$DAEMON stop'  >> /etc/init.d/vpnserver
-echo 'rm $LOCK' >> /etc/init.d/vpnserver
-echo ";;" >> /etc/init.d/vpnserver
-echo "restart)" >> /etc/init.d/vpnserver
-echo "iptables -t nat -D POSTROUTING -s 192.168.250.0/24 -o $ETH -j MASQUERADE" >> /etc/init.d/vpnserver
-echo '$DAEMON stop'  >> /etc/init.d/vpnserver
-echo "sleep 3"  >> /etc/init.d/vpnserver
-echo '$DAEMON start'  >> /etc/init.d/vpnserver
-echo "sleep 1"  >> /etc/init.d/vpnserver
-echo '/sbin/ifconfig tap_soft $TAP_ADDR' >> /etc/init.d/vpnserver
-echo "iptables -t nat -A POSTROUTING -s 192.168.250.0/24 -o $ETH -j MASQUERADE" >> /etc/init.d/vpnserver
-echo "service dhcpd restart" >> /etc/init.d/vpnserver
-echo 'service dnsmasq restart' >> /etc/init.d/vpnserver
-echo ";;"  >> /etc/init.d/vpnserver
-echo "*)"  >> /etc/init.d/vpnserver
-echo 'echo Usage: $0 {start|stop|restart}'  >> /etc/init.d/vpnserver
-echo "exit 1" >> /etc/init.d/vpnserver
-echo "esac" >> /etc/init.d/vpnserver
-echo "exit 0" >> /etc/init.d/vpnserver
-#echo ""  >> /etc/init.d/vpnserver
 
 chmod 755 /etc/init.d/vpnserver
 
 if [ -f /etc/debian_version ]; then
     DISTRO=Debian
     # debian
+	
+		
+	echo "### BEGIN INIT INFO" > /etc/init.d/vpnserver
+	echo "# Provides:          vpnserver" >> /etc/init.d/vpnserver
+	echo "# Required-Start:    $remote_fs $syslog" >> /etc/init.d/vpnserver
+	echo "# Required-Stop:     $remote_fs $syslog" >> /etc/init.d/vpnserver
+	echo "# Default-Start:     2 3 4 5" >> /etc/init.d/vpnserver
+	echo "# Default-Stop:      0 1 6" >> /etc/init.d/vpnserver
+	echo "# Short-Description: Start daemon at boot time" >> /etc/init.d/vpnserver
+	echo "# Description:       Enable Softether by daemon." >> /etc/init.d/vpnserver
+	echo "### END INIT INFO" >> /etc/init.d/vpnserver
+	echo "DAEMON=/usr/local/vpnserver/vpnserver" >> /etc/init.d/vpnserver
+	echo "LOCK=/var/lock/subsys/vpnserver" >> /etc/init.d/vpnserver
+	echo "TAP_ADDR=192.168.250.1" >> /etc/init.d/vpnserver
+	echo "" >> /etc/init.d/vpnserver
+	echo 'test -x $DAEMON || exit 0' >> /etc/init.d/vpnserver
+	echo 'case $1 in' >> /etc/init.d/vpnserver
+	echo "start)" >> /etc/init.d/vpnserver
+	echo '$DAEMON start' >> /etc/init.d/vpnserver
+	echo 'touch $LOCK'  >> /etc/init.d/vpnserver
+	echo "sleep 1"  >> /etc/init.d/vpnserver
+	echo '/sbin/ifconfig tap_soft $TAP_ADDR'  >> /etc/init.d/vpnserver
+	echo "iptables -t nat -A POSTROUTING -s 192.168.250.0/24 -o $ETH -j MASQUERADE" >> /etc/init.d/vpnserver
+	echo "service udhcpd restart" >> /etc/init.d/vpnserver
+	echo 'service dnsmasq restart' >> /etc/init.d/vpnserver
+	echo ";;" >> /etc/init.d/vpnserver
+	echo "stop)" >> /etc/init.d/vpnserver
+	echo "iptables -t nat -D POSTROUTING -s 192.168.250.0/24 -o $ETH -j MASQUERADE" >> /etc/init.d/vpnserver
+	echo '$DAEMON stop'  >> /etc/init.d/vpnserver
+	echo 'rm $LOCK' >> /etc/init.d/vpnserver
+	echo ";;" >> /etc/init.d/vpnserver
+	echo "restart)" >> /etc/init.d/vpnserver
+	echo "iptables -t nat -D POSTROUTING -s 192.168.250.0/24 -o $ETH -j MASQUERADE" >> /etc/init.d/vpnserver
+	echo '$DAEMON stop'  >> /etc/init.d/vpnserver
+	echo "sleep 3"  >> /etc/init.d/vpnserver
+	echo '$DAEMON start'  >> /etc/init.d/vpnserver
+	echo "sleep 1"  >> /etc/init.d/vpnserver
+	echo '/sbin/ifconfig tap_soft $TAP_ADDR' >> /etc/init.d/vpnserver
+	echo "iptables -t nat -A POSTROUTING -s 192.168.250.0/24 -o $ETH -j MASQUERADE" >> /etc/init.d/vpnserver
+	echo "service udhcpd restart" >> /etc/init.d/vpnserver
+	echo 'service dnsmasq restart' >> /etc/init.d/vpnserver
+	echo ";;"  >> /etc/init.d/vpnserver
+	echo "*)"  >> /etc/init.d/vpnserver
+	echo 'echo Usage: $0 {start|stop|restart}'  >> /etc/init.d/vpnserver
+	echo "exit 1" >> /etc/init.d/vpnserver
+	echo "esac" >> /etc/init.d/vpnserver
+	echo "exit 0" >> /etc/init.d/vpnserver
+	#echo ""  >> /etc/init.d/vpnserver
+
 	sysv-rc-conf vpnserver on
 	# install dnsmasq
 	apt-get install -y dnsmasq dhcpd sysv-rc-conf
@@ -96,9 +108,12 @@ if [ -f /etc/debian_version ]; then
 	echo '@reboot root  /etc/init.d/dnsmasq start ' > /etc/cron.d/dnsmasq
 
 	# debian 7.8 fix, /var/lock link to /run/lock, but it seem deleted on reboot
+	
 	# create dir every reboot
 	# echo '@reboot root mkdir /var/lock/subsys' >> /etc/crontab
 	# unfortune this seem not fast enough
+	
+	# create dir using service
 	echo '@reboot root mkdir /var/lock/subsys' > /etc/cron.d/vpnserver
 	echo '@reboot root touch /var/lock/subsys/vpnserver' >> /etc/cron.d/vpnserver
 	echo '@reboot root /usr/local/vpnserver/vpnserver start' >> /etc/cron.d/vpnserver 
@@ -147,6 +162,55 @@ elif [ -f /etc/redhat-release ]; then
     DISTRO="Red Hat"
     # centos
 	# XXX or CentOS or Fedora
+	
+	
+	echo "### BEGIN INIT INFO" > /etc/init.d/vpnserver
+	echo "# Provides:          vpnserver" >> /etc/init.d/vpnserver
+	echo "# Required-Start:    $remote_fs $syslog" >> /etc/init.d/vpnserver
+	echo "# Required-Stop:     $remote_fs $syslog" >> /etc/init.d/vpnserver
+	echo "# Default-Start:     2 3 4 5" >> /etc/init.d/vpnserver
+	echo "# Default-Stop:      0 1 6" >> /etc/init.d/vpnserver
+	echo "# Short-Description: Start daemon at boot time" >> /etc/init.d/vpnserver
+	echo "# Description:       Enable Softether by daemon." >> /etc/init.d/vpnserver
+	echo "### END INIT INFO" >> /etc/init.d/vpnserver
+	echo "DAEMON=/usr/local/vpnserver/vpnserver" >> /etc/init.d/vpnserver
+	echo "LOCK=/var/lock/subsys/vpnserver" >> /etc/init.d/vpnserver
+	echo "TAP_ADDR=192.168.250.1" >> /etc/init.d/vpnserver
+	echo "" >> /etc/init.d/vpnserver
+	echo 'test -x $DAEMON || exit 0' >> /etc/init.d/vpnserver
+	echo 'case $1 in' >> /etc/init.d/vpnserver
+	echo "start)" >> /etc/init.d/vpnserver
+	echo '$DAEMON start' >> /etc/init.d/vpnserver
+	echo 'touch $LOCK'  >> /etc/init.d/vpnserver
+	echo "sleep 1"  >> /etc/init.d/vpnserver
+	echo '/sbin/ifconfig tap_soft $TAP_ADDR'  >> /etc/init.d/vpnserver
+	echo "iptables -t nat -A POSTROUTING -s 192.168.250.0/24 -o $ETH -j MASQUERADE" >> /etc/init.d/vpnserver
+	echo "service dhcpd restart" >> /etc/init.d/vpnserver
+	echo 'service dnsmasq restart' >> /etc/init.d/vpnserver
+	echo ";;" >> /etc/init.d/vpnserver
+	echo "stop)" >> /etc/init.d/vpnserver
+	echo "iptables -t nat -D POSTROUTING -s 192.168.250.0/24 -o $ETH -j MASQUERADE" >> /etc/init.d/vpnserver
+	echo '$DAEMON stop'  >> /etc/init.d/vpnserver
+	echo 'rm $LOCK' >> /etc/init.d/vpnserver
+	echo ";;" >> /etc/init.d/vpnserver
+	echo "restart)" >> /etc/init.d/vpnserver
+	echo "iptables -t nat -D POSTROUTING -s 192.168.250.0/24 -o $ETH -j MASQUERADE" >> /etc/init.d/vpnserver
+	echo '$DAEMON stop'  >> /etc/init.d/vpnserver
+	echo "sleep 3"  >> /etc/init.d/vpnserver
+	echo '$DAEMON start'  >> /etc/init.d/vpnserver
+	echo "sleep 1"  >> /etc/init.d/vpnserver
+	echo '/sbin/ifconfig tap_soft $TAP_ADDR' >> /etc/init.d/vpnserver
+	echo "iptables -t nat -A POSTROUTING -s 192.168.250.0/24 -o $ETH -j MASQUERADE" >> /etc/init.d/vpnserver
+	echo "service dhcpd restart" >> /etc/init.d/vpnserver
+	echo 'service dnsmasq restart' >> /etc/init.d/vpnserver
+	echo ";;"  >> /etc/init.d/vpnserver
+	echo "*)"  >> /etc/init.d/vpnserver
+	echo 'echo Usage: $0 {start|stop|restart}'  >> /etc/init.d/vpnserver
+	echo "exit 1" >> /etc/init.d/vpnserver
+	echo "esac" >> /etc/init.d/vpnserver
+	echo "exit 0" >> /etc/init.d/vpnserver
+	#echo ""  >> /etc/init.d/vpnserver
+
 	chkconfig –add vpnserver 
 	yum install dhcp dnsmasq -y
 	
@@ -237,6 +301,6 @@ echo "■ Use Half-Duplex Mode: Check if you can."
 echo "■ Disable UDP Acceleration: Check."
 echo "Silahkan gunakan Softether Server Manager GUI untuk melanjutkan."
 echo ""
-echo "Shien Ikiru (c) 2015 <shienikiru@gmail.com>
+echo "Shien Ikiru (c) 2015 <shienikiru@gmail.com>"
 
 rm -f /root/install-softether.sh
